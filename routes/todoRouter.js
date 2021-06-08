@@ -1,10 +1,7 @@
 const express = require("express");
+const todoController = require("./../controllers/todoController");
 const router = express.Router();
 
-router.use("/", (req, res) => {
-  res.status(200).json({
-    status: "success",
-  });
-});
+router.use("/", todoController.sayHello);
 
 module.exports = router;
