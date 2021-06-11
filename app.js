@@ -3,6 +3,6 @@ const app = express();
 
 const todoRouter = require("./routes/todoRouter");
 app.use(express.json());
-app.use("/", todoRouter);
+app.use("/api/v1/todo", todoRouter);
 
 module.exports = app;
