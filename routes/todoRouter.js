@@ -9,5 +9,6 @@ const router = express.Router();
 
 router.route("/todos").get(todoController.getTodos);
 router.route("/createTodo").post(todoController.createTodo);
+router.route("/flipStatus/:id").patch(todoController.flipStatus);
 
 module.exports = router;
