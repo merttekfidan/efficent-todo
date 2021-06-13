@@ -15,6 +15,10 @@ const todoSchema = new mongoose.Schema({
   },
   urgent: Boolean,
   important: Boolean,
+  completed: {
+    type: Boolean,
+    default: false,
+  },
   description: {
     type: String,
     trim: true,
@@ -32,12 +36,13 @@ const todoSchema = new mongoose.Schema({
   },
   subTodo: [{ type: mongoose.Schema.ObjectId, ref: "Todo" }],
 });
-//60c12295d2a87bdd7add7c96
+
 todoSchema.pre(/^find/, function (next) {
   this.populate({
     path: "subTodo",
   });
   next();
 });
+
 const Todo = mongoose.model("Todo", todoSchema);
 module.exports = Todo;
