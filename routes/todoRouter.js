@@ -7,8 +7,11 @@ const router = express.Router();
 // router.use("/subtest", todoController.subTest);
 // router.use("/findtest", todoController.findTest);
 
-router.route("/todos").get(todoController.getTodos);
-router.route("/createTodo").post(todoController.createTodo);
-router.route("/flipStatus/:id").patch(todoController.flipStatus);
+router.route("/").get(todoController.getTodos).post(todoController.createTodo);
+router
+  .route("/:id")
+  .get(todoController.getTodo)
+  .patch(todoController.flipStatus)
+  .delete(todoController.deleteTodo);
 
 module.exports = router;

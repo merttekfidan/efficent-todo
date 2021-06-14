@@ -1,12 +1,43 @@
 const Todo = require("./../models/todoModel");
 const catchAsync = require("./../utils/catchAsync");
 
+status = (statusCode, data, res) => {
+  if (statusCode === 404) {
+    res.status(statusCode).json({
+      status: "fail",
+    });
+  } else {
+    res.status(statusCode).json({
+      status: "success",
+      data,
+    });
+  }
+};
+
 exports.getTodos = catchAsync(async (req, res, next) => {
   const todo = await Todo.find();
-  res.status(200).json({
-    status: "success",
-    data: todo,
-  });
+  if (todo) {
+    status(200, todo, res);
+  } else {
+    status(404, null, res);
+  }
+});
+
+exports.getTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.findById(req.params.id);
+  if (todo) {
+    status(200, todo, res);
+  } else {
+    status(404, null, res);
+  }
+});
+exports.deleteTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.findByIdAndDelete(req.params.id);
+  if (todo) {
+    status(204, null, res);
+  } else {
+    status(404, null, res);
+  }
 });
 
 exports.createTodo = catchAsync(async (req, res, next) => {
@@ -24,10 +55,11 @@ exports.createTodo = catchAsync(async (req, res, next) => {
       );
     }
 
-    res.status(201).json({
-      status: "success",
-      data: { todo },
-    });
+    if (todo) {
+      status(201, todo, res);
+    } else {
+      status(404, null, res);
+    }
   }
 });
 
@@ -41,9 +73,10 @@ exports.flipStatus = catchAsync(async (req, res, next) => {
         val.save();
       }
     );
-    res.status(200).json({
-      status: "success",
-      data: { todo },
-    });
+    if (todo) {
+      status(200, todo, res);
+    } else {
+      status(404, null, res);
+    }
   }
 });
