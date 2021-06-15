@@ -43,6 +43,9 @@ todoSchema.pre(/^find/, function (next) {
   });
   next();
 });
-
+todoSchema.pre("deleteOne", function (next) {
+  console.log(this.find());
+  next();
+});
 const Todo = mongoose.model("Todo", todoSchema);
 module.exports = Todo;

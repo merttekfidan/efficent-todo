@@ -32,8 +32,8 @@ exports.getTodo = catchAsync(async (req, res, next) => {
   }
 });
 exports.deleteTodo = catchAsync(async (req, res, next) => {
-  const todo = await Todo.findByIdAndDelete(req.params.id);
-  if (todo) {
+  const todo = await Todo.deleteOne({ _id: req.params.id });
+  if (todo.deletedCount > 0) {
     status(204, null, res);
   } else {
     status(404, null, res);
