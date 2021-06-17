@@ -32,12 +32,14 @@ exports.getTodo = catchAsync(async (req, res, next) => {
   }
 });
 exports.deleteTodo = catchAsync(async (req, res, next) => {
-  const todo = await Todo.deleteOne({ _id: req.params.id });
-  if (todo.deletedCount > 0) {
+  //const todo = await Todo.deleteOne({ _id: req.params.id });
+  const todo = await Todo.find({ _id: req.params.id }).select("subTodo");
+  status(200, todo, res);
+  /*if (todo.deletedCount > 0) {
     status(204, null, res);
   } else {
     status(404, null, res);
-  }
+  }*/
 });
 
 exports.createTodo = catchAsync(async (req, res, next) => {
