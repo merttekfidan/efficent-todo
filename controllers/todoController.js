@@ -1,5 +1,6 @@
 const Todo = require("./../models/todoModel");
 const catchAsync = require("./../utils/catchAsync");
+var ObjectID = require("mongodb").ObjectID;
 
 status = (statusCode, data, res) => {
   if (statusCode === 404) {
@@ -33,7 +34,15 @@ exports.getTodo = catchAsync(async (req, res, next) => {
 });
 exports.deleteTodo = catchAsync(async (req, res, next) => {
   //const todo = await Todo.deleteOne({ _id: req.params.id });
-  const todo = await Todo.find({ _id: req.params.id }).select("subTodo");
+
+  const todo = await Todo.aggregate([
+    {
+      $match: {
+        _id: req.params.id,
+      },
+    },
+  ]);
+  console.log(todo);
   status(200, todo, res);
   /*if (todo.deletedCount > 0) {
     status(204, null, res);
@@ -46,16 +55,6 @@ exports.createTodo = catchAsync(async (req, res, next) => {
   if (req) {
     // Adds a todo
     var todo = await Todo.create(req.body);
-    if (req.body.parentTodoId) {
-      // Finds parent todo and adds a sub todo
-      var todo = await Todo.findByIdAndUpdate(
-        req.body.parentTodoId,
-        {
-          $push: { subTodo: todo._id },
-        },
-        { new: true }
-      );
-    }
 
     if (todo) {
       status(201, todo, res);

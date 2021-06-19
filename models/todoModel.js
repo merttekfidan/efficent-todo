@@ -34,14 +34,6 @@ const todoSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  subTodo: [{ type: mongoose.Schema.ObjectId, ref: "Todo" }],
-});
-
-todoSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "subTodo",
-  });
-  next();
 });
 todoSchema.pre("deleteOne", function (next) {
   console.log(this.find().select);
