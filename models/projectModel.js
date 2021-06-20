@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Todo = require("./todoRouter");
+const Todo = require("./todoModel");
 const projectSchema = new mongoose.Schema({
   title: {
     type: String,
