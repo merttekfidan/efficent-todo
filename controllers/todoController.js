@@ -33,22 +33,13 @@ exports.getTodo = catchAsync(async (req, res, next) => {
   }
 });
 exports.deleteTodo = catchAsync(async (req, res, next) => {
-  //const todo = await Todo.deleteOne({ _id: req.params.id });
-
-  const todo = await Todo.aggregate([
-    {
-      $match: {
-        _id: req.params.id,
-      },
-    },
-  ]);
+  const todo = await Todo.deleteOne({ _id: req.params.id });
   console.log(todo);
-  status(200, todo, res);
-  /*if (todo.deletedCount > 0) {
+  if (todo.deletedCount > 0) {
     status(204, null, res);
   } else {
     status(404, null, res);
-  }*/
+  }
 });
 
 exports.createTodo = catchAsync(async (req, res, next) => {
