@@ -51,8 +51,8 @@ const sendErrorProd = (err, res) => {
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
-
-  if (process.env.NODE_ENV === "development") {
+  sendErrorDev(err, res);
+  /*if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     //Interestingly, you have to define ''name'' property seperately. Otherwise, object destructering will not catch err.name
@@ -65,5 +65,5 @@ module.exports = (err, req, res, next) => {
     if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
 
     sendErrorProd(error, res);
-  }
+  }*/
 };
