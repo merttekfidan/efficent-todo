@@ -35,9 +35,6 @@ const todoSchema = new mongoose.Schema({
     default: true,
   },
 });
-todoSchema.pre("deleteOne", function (next) {
-  console.log(this.find().select);
-  next();
-});
+
 const Todo = mongoose.model("Todo", todoSchema);
 module.exports = Todo;

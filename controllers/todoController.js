@@ -2,7 +2,7 @@ const Todo = require("./../models/todoModel");
 const catchAsync = require("./../utils/catchAsync");
 var ObjectID = require("mongodb").ObjectID;
 
-status = (statusCode, data, res) => {
+const status = async (statusCode, data, res) => {
   if (statusCode === 404) {
     res.status(statusCode).json({
       status: "fail",
@@ -32,6 +32,7 @@ exports.getTodo = catchAsync(async (req, res, next) => {
     status(404, null, res);
   }
 });
+
 exports.deleteTodo = catchAsync(async (req, res, next) => {
   const todo = await Todo.deleteOne({ _id: req.params.id });
   console.log(todo);
@@ -60,11 +61,23 @@ exports.flipStatus = catchAsync(async (req, res, next) => {
     const todo = await Todo.findByIdAndUpdate(
       req.params.id,
       {},
+      { new: true },
       function (err, val) {
         val.completed = !val.completed;
         val.save();
+        res.status(200).json({
+          data: val,
+        });
       }
     );
+  }
+});
+
+exports.updateTodo = catchAsync(async (req, res, next) => {
+  if (req) {
+    const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (todo) {
       status(200, todo, res);
     } else {
