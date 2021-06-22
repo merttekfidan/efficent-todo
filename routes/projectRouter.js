@@ -13,4 +13,5 @@ router
   .patch(projectController.updateProject)
   .delete(projectController.deleteProject);
 
+router.patch("/:id/addTodo", projectController.addTodoToProject);
 module.exports = router;

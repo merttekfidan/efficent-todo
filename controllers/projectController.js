@@ -2,7 +2,7 @@ const Project = require("./../models/projectModel");
 const Todo = require("./../models/todoModel");
 const catchAsync = require("./../utils/catchAsync");
 
-status = (statusCode, data, res) => {
+const status = async (statusCode, data, res) => {
   if (statusCode === 404) {
     res.status(statusCode).json({
       status: "fail",
@@ -40,7 +40,9 @@ exports.getAProject = catchAsync(async (req, res, next) => {
   }
 });
 exports.updateProject = catchAsync(async (req, res, next) => {
-  const project = await Project.findByIdAndUpdate(req.params.id, req.body);
+  const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
   if (project) {
     status(200, projects, res);
   } else {
@@ -53,5 +55,18 @@ exports.deleteProject = catchAsync(async (req, res, next) => {
     status(204, null, res);
   } else {
     status(500, null, res);
+  }
+});
+
+exports.addTodoToProject = catchAsync(async (req, res, next) => {
+  if (req.body.todoId) {
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      {
+        $addToSet: { todos: req.body.todoId },
+      },
+      { new: true }
+    );
+    status(201, project, res);
   }
 });
