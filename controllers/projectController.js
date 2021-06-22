@@ -70,3 +70,16 @@ exports.addTodoToProject = catchAsync(async (req, res, next) => {
     status(201, project, res);
   }
 });
+
+exports.replaceTodoFromProject = catchAsync(async (req, res, next) => {
+  if (req.body.todoId) {
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { todos: req.body.todoId },
+      },
+      { new: true }
+    );
+    status(201, project, res);
+  }
+});
