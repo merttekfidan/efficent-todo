@@ -26,10 +26,9 @@ const todoSchema = new mongoose.Schema({
   repetative: {
     type: String,
     enum: {
-      values: ["day", "week", "month", "weekdays"],
+      values: ["not", "day", "week", "month", "weekdays"],
     },
   },
-  categories: [String],
   underFiveMins: {
     type: Boolean,
     default: true,
