@@ -22,10 +22,9 @@ exports.seedTodo = async (n = 1, routine = false) => {
       };
       fieldArr.push(data);
     }
-    console.log(fieldArr);
+
     const todos = await Todo.create(fieldArr);
     console.log(todos);
-    process.exit();
   } catch (err) {
     return err;
   }
